@@ -188,7 +188,7 @@ Docker image
 ------------
 If you have a Cassandra cluster on a docker, or docker swarm network you can execute the Cassandra dump using a docker image:
 
-```docker run -it --network=mercury --name=cassandradump -e KEYSPACE=mercury_asm_development ricmathie/cassandradump```
+```docker run -it --network=mynet --name=cassandradump -e KEYSPACE=mykeyspace ricmathie/cassandradump```
 
 mount or cat the docker dump file `dump.cql.gz` or similar to get the data. See the Dockerfile for inspiration.
 
