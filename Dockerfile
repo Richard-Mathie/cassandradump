@@ -20,4 +20,4 @@ ENV CASSANDRA=cassandra \
 
 RUN mkfifo tempfile
 
-CMD ["pypy cassandradump.py --host=$CASSANDRA  --keyspace $KEYSPACE --export-file tempfile & cat tempfile | gzip > $DUMP "]
+CMD ["bash", "-c", "sleep 2; /usr/local/bin/pypy cassandradump.py --host=$CASSANDRA  --keyspace $KEYSPACE --export-file tempfile & cat tempfile | gzip > $DUMP"]

@@ -182,3 +182,13 @@ satisfies those filters will be included in the dump:
     $ cat dump.cql
     INSERT INTO "system"."schema_columns" (keyspace_name, columnfamily_name, column_name, component_index, index_name, index_options, index_type, type, validator) VALUES ('OpsCenter', 'backup_reports', 'backup_id', 1, NULL, 'null', NULL, 'clustering_key', 'org.apache.cassandra.db.marshal.UTF8Type')
     INSERT INTO "system"."schema_columns" (keyspace_name, columnfamily_name, column_name, component_index, index_name, index_options, index_type, type, validator) VALUES ('OpsCenter', 'backup_reports', 'deleted_at', 4, NULL, 'null', NULL, 'regular', 'org.apache.cassandra.db.marshal.TimestampType')
+
+
+Docker image
+------------
+If you have a Cassandra cluster on a docker, or docker swarm network you can execute the Cassandra dump using a docker image:
+
+```docker run -it --network=mercury --name=cassandradump -e KEYSPACE=mercury_asm_development ricmathie/cassandradump```
+
+mount or cat the docker dump file `dump.cql.gz` or similar to get the data. See the Dockerfile for inspiration.
+
