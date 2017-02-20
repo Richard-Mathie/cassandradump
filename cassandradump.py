@@ -297,10 +297,10 @@ def get_credentials():
     return {'username': args.username, 'password': args.password}
 
 def setup_cluster():
-    if args.host is None:
+    if args.hosts is None:
         nodes = ['localhost']
     else:
-        nodes = [args.host]
+        nodes = args.hosts
 
     if args.port is None:
         port = 9042
