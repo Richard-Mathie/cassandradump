@@ -43,7 +43,7 @@ def table_to_cqlfile(session, keyspace, tablename, flt, tableval, filep, limit=0
     if limit > 0:
         query = query + " LIMIT " + str(limit)
 
-    rows = session.execute(query, timeout=request_timeout)
+    rows = session.execute(query)
 
     cnt = 0
 
