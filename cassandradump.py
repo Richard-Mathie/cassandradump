@@ -17,7 +17,6 @@ TIMEOUT = 120.0
 FETCH_SIZE = 100
 DOT_EVERY = 1000
 CONCURRENT_BATCH_SIZE = 1000
-
 args = None
 
 def cql_type(val):
@@ -44,7 +43,7 @@ def table_to_cqlfile(session, keyspace, tablename, flt, tableval, filep, limit=0
     if limit > 0:
         query = query + " LIMIT " + str(limit)
 
-    rows = session.execute(query)
+    rows = session.execute(query, timeout=request_timeout)
 
     cnt = 0
 
@@ -330,8 +329,8 @@ def setup_cluster():
 
     session = cluster.connect()
 
-    session.default_timeout = TIMEOUT
-    session.default_fetch_size = FETCH_SIZE
+    session.default_timeout = args.timeout or TIMEOUT
+    session.default_fetch_size = args.fetch or FETCH_SIZE
     session.row_factory = cassandra.query.ordered_dict_factory
     return session
 
@@ -348,8 +347,10 @@ def main():
     parser.add_argument('--cf', help='export a column family. The name must include the keyspace, e.g. "system.schema_columns". Can be specified multiple times', action='append')
     parser.add_argument('--export-file', help='export data to the specified file')
     parser.add_argument('--filter', help='export a slice of a column family according to a CQL filter. This takes essentially a typical SELECT query stripped of the initial "SELECT ... FROM" part (e.g. "system.schema_columns where keyspace_name =\'OpsCenter\'", and exports only that data. Can be specified multiple times', action='append')
-    parser.add_argument('--hosts',  nargs='+', type=str, help='the address of a Cassandra node in the cluster (localhost if omitted)')
+    parser.add_argument('--hosts', nargs='+', type=str, help='the address of a Cassandra node in the cluster (localhost if omitted)')
     parser.add_argument('--port', help='the port of a Cassandra node in the cluster (9042 if omitted)')
+    parser.add_argument('--timeout', type=int, help='sets the client request timeout (120s if ommitted)')
+    parser.add_argument('--fetch', type=int, help='sets the fetch size in rows (100 if ommitted)')
     parser.add_argument('--import-file', help='import data from the specified file')
     parser.add_argument('--keyspace', help='export a keyspace along with all its column families. Can be specified multiple times', action='append')
     parser.add_argument('--exclude-cf', help='when using --keyspace, specify column family to exclude.  Can be specified multiple times', action='append')

@@ -40,7 +40,7 @@ The help should already contain some useful information:
 ::
 
     usage: cassandradump.py [-h] [--cf CF] [--export-file EXPORT_FILE]
-                            [--filter FILTER] [--host HOST] [--port PORT]
+                            [--filter FILTER] [--hosts HOST] [--port PORT]
                             [--import-file IMPORT_FILE] [--keyspace KEYSPACE]
                             [--exclude-cf EXCLUDE_CF] [--no-create] [--no-insert]
                             [--password PASSWORD]
@@ -64,7 +64,7 @@ The help should already contain some useful information:
                             "system.schema_columns where keyspace_name
                             ='OpsCenter'", and exports only that data. Can be
                             specified multiple times
-      --host HOST           the address of a Cassandra node in the cluster
+      --hosts HOST           the address of a Cassandra node in the cluster
                             (localhost if omitted)
       --port PORT           the port of a Cassandra node in the cluster
                             (9042 if omitted)
