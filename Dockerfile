@@ -1,15 +1,6 @@
-FROM pypy:2-slim
+FROM ricmathie/python_cassandra:pypy_2
 
 MAINTAINER Richard Mathie "Richard.Mathie@amey.co.uk"
-
-RUN apt-get update \
-    && apt-get install -y gcc python-dev \
-    && apt-get install -y libev4 libev-dev \
-    && pip install --no-cache-dir six futures lz4 twisted gevent eventlet cython pytz scales \
-    && apt-get -y purge gcc python python-dev \
-    && apt-get autoremove -y \
-    && rm -rf ~/.cache
-RUN  pip install --no-cache-dir cassandra-driver && rm -rf ~/.cache
 
 COPY cassandradump.py /
 WORKDIR /
@@ -20,4 +11,4 @@ ENV CASSANDRA=cassandra \
 
 RUN mkfifo tempfile
 
-CMD ["bash", "-c", "sleep 2; /usr/local/bin/pypy cassandradump.py --host=$CASSANDRA  --keyspace $KEYSPACE --export-file tempfile & cat tempfile | gzip > $DUMP"]
+CMD ["bash", "-c", "sleep 2; /usr/local/bin/pypy cassandradump.py --hosts $(getent hosts $CASSANDRA | awk '{print $1}')  --keyspace $KEYSPACE --export-file tempfile & cat tempfile | gzip > $DUMP"]
